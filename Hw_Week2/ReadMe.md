@@ -7,3 +7,6 @@ https://relational.fel.cvut.cz/dataset/NBA
 
 ![alt text](data/NBA.png "Title")
 
+# Aura connection
+ click instance select driver
+ 

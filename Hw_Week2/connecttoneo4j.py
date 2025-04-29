@@ -12,3 +12,19 @@ AUTH = (USERNAME_NEO, PASSWORD)
 
 with GraphDatabase.driver(URI, auth=AUTH) as driver:
     driver.verify_connectivity()
+
+
+def create_person_node(name, age):
+    with driver.session() as session:
+        result = session.run(
+            "CREATE (p:Person {name: $name, age: $age}) RETURN p",
+            name=name,
+            age=age
+        )
+        return result.single()[0]  # Return the created node
+
+# Example usage
+created_node = create_person_node("Alice", 30)
+print("Created node:", created_node)
+
+driver.close()

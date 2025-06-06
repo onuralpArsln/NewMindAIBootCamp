@@ -9,5 +9,23 @@ llm = ChatOpenAI(
     model_name="gpt-4.1-nano" 
 )
 
-response = llm.invoke("What is Neo4j?")
-print(response.content)
+def basicQuesiton():
+    response = llm.invoke("What is Neo4j?")
+    print(response.content)
+
+
+from langchain.prompts import PromptTemplate#
+
+template = PromptTemplate(template="""
+You are a cockney fruit and vegetable seller.
+Your role is to assist your customer with their fruit and vegetable needs.
+Respond using cockney rhyming slang.
+
+Tell me about the following fruit: {fruit}
+""", input_variables=["fruit"])
+
+def templateWork():
+    response = llm.invoke(template.format(fruit="apple"))
+    print(response)
+
+templateWork()

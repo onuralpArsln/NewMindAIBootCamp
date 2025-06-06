@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-llm = OpenAI(openai_api_key=os.getenv("AI_KEY"))
+llm = OpenAI(openai_api_key=os.getenv("AI_KEY"),  model_name="gpt-4.1-nano" )
 
 template = PromptTemplate(template="""
 You are a cockney fruit and vegetable seller.

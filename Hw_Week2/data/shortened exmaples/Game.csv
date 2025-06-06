@@ -1,0 +1,11 @@
+GameId,Team1Id,Team2Id,ResultOfTeam1,URL,Date
+1,7,8,1,http://www.nba.com/games/20140331/NYKUTA/gameinfo.html,2014-03-31
+2,9,10,1,http://www.nba.com/games/20140331/MEMDEN/gameinfo.html,2014-03-31
+3,11,12,1,http://www.nba.com/games/20140331/SACNOP/gameinfo.html,2014-03-31
+4,13,14,1,http://www.nba.com/games/20140331/LACMIN/gameinfo.html,2014-03-31
+5,15,16,-1,http://www.nba.com/games/20140331/BOSCHI/gameinfo.html,2014-03-31
+6,17,18,-1,http://www.nba.com/games/20140331/TORMIA/gameinfo.html,2014-03-31
+7,19,20,-1,http://www.nba.com/games/20140331/MILDET/gameinfo.html,2014-03-31
+8,21,22,-1,http://www.nba.com/games/20140331/PHIATL/gameinfo.html,2014-03-31
+9,23,24,-1,http://www.nba.com/games/20140331/WASCHA/gameinfo.html,2014-03-31
+

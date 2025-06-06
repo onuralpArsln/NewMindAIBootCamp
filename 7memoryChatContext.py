@@ -1,3 +1,12 @@
+"""
+This code creates a surfer-themed chatbot using LangChain with memory support. 
+It uses ChatMessageHistory to store a chat log in RAM and RunnableWithMessageHistory 
+to inject/retrieve this history on each interaction. The MessagesPlaceholder ensures 
+prior messages are included in the prompt. get_memory always returns the same memory, 
+so all turns share a single history. No data is persisted; memory is session-wide and 
+cleared on exit.
+"""
+
 import os
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -50,6 +59,7 @@ current_weather = """
         ]
     }"""
 
+# chat_with_message_history build with chat_with_message_history = RunnableWithMessageHistory  
 while (question := input("> ")) != "exit":
 
     response = chat_with_message_history.invoke(

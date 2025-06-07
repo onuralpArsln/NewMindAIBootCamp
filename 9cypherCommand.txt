@@ -1,0 +1,72 @@
+// Constraints
+CREATE CONSTRAINT player_id_unique IF NOT EXISTS
+FOR (p:Player) REQUIRE p.id IS UNIQUE;
+
+CREATE CONSTRAINT team_id_unique IF NOT EXISTS
+FOR (t:Team) REQUIRE t.id IS UNIQUE;
+
+CREATE CONSTRAINT game_id_unique IF NOT EXISTS
+FOR (g:Game) REQUIRE g.id IS UNIQUE;
+
+// 1. Takım Nodeları
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/onuralpArsln/NewMindAIBootCamp/main/Hw_Week2/data/Team.csv' AS row
+WITH row WHERE row.TeamName IS NOT NULL AND trim(row.TeamName) <> ""
+MERGE (:Team {id: toInteger(row.TeamId), name: row.TeamName});
+
+// 2. Oyuncu nodeları
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/onuralpArsln/NewMindAIBootCamp/main/Hw_Week2/data/Player.csv' AS row
+WITH row WHERE row.PlayerName IS NOT NULL AND trim(row.PlayerName) <> ""
+MERGE (:Player {id: toInteger(row.PlayerId), name: row.PlayerName});
+
+// 3. Maç nodeları ve kazanma kaybetme durumları
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/onuralpArsln/NewMindAIBootCamp/main/Hw_Week2/data/Game.csv' AS row
+MERGE (g:Game {
+  id: toInteger(row.GameId),
+  date: row.Date,
+  url: row.URL
+})
+WITH g, row
+MATCH (team1:Team {id: toInteger(row.Team1Id)}),
+      (team2:Team {id: toInteger(row.Team2Id)})
+FOREACH (_ IN CASE WHEN row.ResultOfTeam1 = "1" THEN [1] ELSE [] END |
+  MERGE (team1)-[:WON]->(g)
+  MERGE (team2)-[:LOST]->(g)
+)
+FOREACH (_ IN CASE WHEN row.ResultOfTeam1 = "-1" THEN [1] ELSE [] END |
+  MERGE (team2)-[:WON]->(g)
+  MERGE (team1)-[:LOST]->(g)
+);
+
+// 4. Oyuncuların oyun içi istatistikleri
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/onuralpArsln/NewMindAIBootCamp/main/Hw_Week2/data/Actions.csv' AS row
+MATCH (p:Player {id: toInteger(row.PlayerId)})
+MATCH (t:Team {id: toInteger(row.TeamId)})
+MATCH (g:Game {id: toInteger(row.GameId)})
+MERGE (p)-[:PLAYED_FOR]->(t)
+MERGE (p)-[:PLAYED {
+  minutes: toInteger(row.Minutes),
+  plusMinus: toInteger(row.PlusMinus),
+  points: toInteger(row.Points),
+  starter: row.Starter = "1",
+  offensiveRebounds: toInteger(row.OffensiveRebounds),
+  defensiveRebounds: toInteger(row.DefensiveRebounds),
+  totalRebounds: toInteger(row.TotalRebounds),
+  assists: toInteger(row.Assists),
+  personalFouls: toInteger(row.PersonalFouls),
+  steals: toInteger(row.Steals),
+  turnovers: toInteger(row.Turnovers),
+  blockedShots: toInteger(row.BlockedShots),
+  blocksAgainst: toInteger(row.BlocksAgainst)
+}]->(g)
+MERGE (p)-[:FIELD_GOAL {
+  made: toInteger(row.FieldGoalsMade),
+  attempt: toInteger(row.FieldGoalAttempts)
+}]->(g)
+MERGE (p)-[:THREE_POINT {
+  made: toInteger(row.`3PointsMade`),
+  attempt: toInteger(row.`3PointAttempts`)
+}]->(g)
+MERGE (p)-[:FREE_THROW {
+  made: toInteger(row.FreeThrowsMade),
+  attempt: toInteger(row.FreeThrowAttempts)
+}]->(g);

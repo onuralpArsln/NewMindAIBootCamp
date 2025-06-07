@@ -3,6 +3,7 @@ from utils import write_message
 from agent import generate_response
 from pathlib import Path
 
+
 # Page Config
 st.set_page_config(
     page_title="Hoops the Courtside Chatbot",
@@ -10,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-image_path = Path("10Bot\\imgs\\bb.png")
+
 
 st.markdown(
     """
@@ -41,9 +42,14 @@ st.markdown(
         <div class="bouncing-ball">🏀</div>
     </div>
 
+ 
+
     """,
     unsafe_allow_html=True
 )
+
+
+
 
 # Set up Session State
 if "messages" not in st.session_state:
@@ -61,7 +67,7 @@ def handle_submit(message):
     """
 
     # Handle the response
-    with st.spinner('Thinking...'):
+    with st.spinner('Throwing awesome three pointers...'):
         # Call the agent
         response = generate_response(message)
         write_message('assistant', response)

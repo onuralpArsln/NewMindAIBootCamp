@@ -1,6 +1,7 @@
 import streamlit as st
 from utils import write_message
 from agent import generate_response
+from pathlib import Path
 
 # Page Config
 st.set_page_config(
@@ -8,6 +9,8 @@ st.set_page_config(
     page_icon="🏀",
     initial_sidebar_state="expanded",
 )
+
+image_path = Path("10Bot\\imgs\\bb.png")
 
 st.markdown(
     """
@@ -37,6 +40,7 @@ st.markdown(
     <div style="text-align: center; padding: 20px;">
         <div class="bouncing-ball">🏀</div>
     </div>
+
     """,
     unsafe_allow_html=True
 )
